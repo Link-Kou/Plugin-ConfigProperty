@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<trees properties="/src/main/java/com/httpurl.properties" code="Ops_.+\.Code$" codeval="1[0-9]{4}" msg="Ops_.+\.Msg$">
+    <model path="/src/main" title="" tooltip="<b>Code:8*****</b>" properties="" code="Ops_.+\.Code$" codeval="1[0-9]{4}" msg="Ops_.+" >
+    	<tree path="/generate" subpath="/src/main/java/com/djtms/tms" title="配置-xy" tooltip="<b>Code:7*****</b>" >
+        	<tree path="/evaluationmanagement" title="评价管理" tooltip="<b>Code:1**8*</b>"/>
+    	</tree>
+	</model>
+</trees>
