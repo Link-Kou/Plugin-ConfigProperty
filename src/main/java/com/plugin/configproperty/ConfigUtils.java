@@ -1,8 +1,6 @@
 package com.plugin.configproperty;
 
 import com.plugin.configproperty.spring.ConfigMsgPropertyConfigurer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -123,6 +123,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
@@ -132,6 +133,7 @@
 			</plugin>
 			<!-- 生成sources源码包的插件 -->
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
@@ -150,6 +152,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.0.1</version>
 				<configuration>
 					<show>private</show>
 					<nohelp>true</nohelp>
@@ -161,6 +164,7 @@
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
+						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
@@ -174,6 +178,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.2.0</version>
 				<configuration>
 					<archive>
 						<addMavenDescriptor>true</addMavenDescriptor>
@@ -222,16 +227,16 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<plugin>
+					<!--<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-deploy-plugin</artifactId>
 						<version>3.0.0-M1</version>
 						<configuration>
 							<deployAtEnd>true</deployAtEnd>
 						</configuration>
-					</plugin>
+					</plugin>-->
 					<!-- Source -->
-					<plugin>
+					<!--<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
 						<version>2.2.1</version>
@@ -243,11 +248,12 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin>-->
 					<!-- Javadoc -->
-					<plugin>
+					<!--<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.2.0</version>
 						<configuration>
 							<show>private</show>
 							<nohelp>true</nohelp>
@@ -267,7 +273,7 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>
+					</plugin>-->
 					<!-- GPG -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
