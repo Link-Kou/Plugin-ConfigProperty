@@ -1,4 +1,4 @@
-package com.plugin.configproperty;
+package com.linkkou.configproperty;
 
 
 import com.sun.source.util.Trees;
@@ -18,7 +18,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
-import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -26,7 +25,7 @@ import java.util.*;
  * @author LK
  * @date 2018-05-31 10:46
  */
-@SupportedAnnotationTypes({"com.plugin.configproperty.ConfigValue"})
+@SupportedAnnotationTypes({"com.linkkou.configproperty.ConfigValue"})
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class ConfigMsgProcessor extends AbstractProcessor {
 
@@ -129,7 +128,7 @@ public class ConfigMsgProcessor extends AbstractProcessor {
             String configvalue = "";
             boolean isConfigValue = false;
             for (JCTree.JCAnnotation jcAnnotation : var1.mods.getAnnotations()) {
-                if (jcAnnotation.getAnnotationType().type.toString().equals("com.plugin.configproperty.ConfigValue")) {
+                if (jcAnnotation.getAnnotationType().type.toString().equals("com.linkkou.configproperty.ConfigValue")) {
                     for (Pair<Symbol.MethodSymbol, Attribute> pair : jcAnnotation.attribute.values) {
                         if (pair.snd.getValue() instanceof Attribute.Compound) {
                             Attribute.Compound ac = (Attribute.Compound) pair.snd.getValue();
@@ -153,7 +152,7 @@ public class ConfigMsgProcessor extends AbstractProcessor {
                     //类名称 会自己导入包，但是要完整的路径
                     make.Select(
                             make.Select(
-                                    make.Select(make.Ident(names.fromString("com")), names.fromString("plugin"))
+                                    make.Select(make.Ident(names.fromString("com")), names.fromString("linkkou"))
                                     , names.fromString("configproperty")
                             ), names.fromString("ConfigUtils")),
                     //参数

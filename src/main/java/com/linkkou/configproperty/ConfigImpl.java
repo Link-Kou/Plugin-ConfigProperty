@@ -1,4 +1,4 @@
-package com.plugin.configproperty;
+package com.linkkou.configproperty;
 
 
 import java.util.IllegalFormatException;

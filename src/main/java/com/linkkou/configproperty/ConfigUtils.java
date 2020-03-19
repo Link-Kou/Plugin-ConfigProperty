@@ -1,6 +1,6 @@
-package com.plugin.configproperty;
+package com.linkkou.configproperty;
 
-import com.plugin.configproperty.spring.ConfigMsgPropertyConfigurer;
+import com.linkkou.configproperty.spring.ConfigMsgPropertyConfigurer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

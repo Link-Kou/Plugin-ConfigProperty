@@ -1,4 +1,4 @@
-package com.plugin.configproperty.spring;
+package com.linkkou.configproperty.spring;
 
 
 import org.springframework.beans.BeansException;

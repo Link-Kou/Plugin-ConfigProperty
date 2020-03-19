@@ -1,4 +1,4 @@
-package com.plugin.configproperty;
+package com.linkkou.configproperty;
 
 import org.springframework.beans.factory.annotation.Value;
 

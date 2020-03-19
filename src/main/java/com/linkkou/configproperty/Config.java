@@ -1,4 +1,4 @@
-package com.plugin.configproperty;
+package com.linkkou.configproperty;
 
 /**
  * 配置

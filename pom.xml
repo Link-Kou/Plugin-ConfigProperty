@@ -7,7 +7,7 @@
 	<groupId>com.github.link-kou</groupId>
 	<artifactId>ConfigProperty</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>Plugin-ConfigProperty-${project.version}</name>
 	<url>https://github.com/Link-Kou/Plugin-ConfigProperty</url>
 
@@ -227,19 +227,19 @@
 			<id>release</id>
 			<build>
 				<plugins>
-					<!--<plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-deploy-plugin</artifactId>
 						<version>3.0.0-M1</version>
 						<configuration>
 							<deployAtEnd>true</deployAtEnd>
 						</configuration>
-					</plugin>-->
+					</plugin>
 					<!-- Source -->
-					<!--<plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-source-plugin</artifactId>
-						<version>2.2.1</version>
+						<version>3.0.1</version>
 						<executions>
 							<execution>
 								<phase>package</phase>
@@ -248,12 +248,12 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>-->
+					</plugin>
 					<!-- Javadoc -->
-					<!--<plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.2.0</version>
+						<version>3.0.1</version>
 						<configuration>
 							<show>private</show>
 							<nohelp>true</nohelp>
@@ -273,7 +273,7 @@
 								</configuration>
 							</execution>
 						</executions>
-					</plugin>-->
+					</plugin>
 					<!-- GPG -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
