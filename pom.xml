@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.link-kou</groupId>
-	<artifactId>ConfigProperty</artifactId>
+	<artifactId>config-property</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.1</version>
+	<version>1.0.0</version>
 	<name>Plugin-ConfigProperty-${project.version}</name>
 	<url>https://github.com/Link-Kou/Plugin-ConfigProperty</url>
 
@@ -194,6 +194,7 @@
 			<!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>

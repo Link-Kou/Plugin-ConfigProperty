@@ -18,6 +18,18 @@
     JAVA1.8
     Maven
     
+### Maven仓库
+
+ ```xml：
+
+ <dependency>
+   <groupId>com.github.link-kou</groupId>
+   <artifactId>config-property</artifactId>
+   <version>1.0.0</version>
+ </dependency>
+
+ ```    
+    
 ### 使用教程
 
 1. @ConfigValue会实现构建，在Spring环境中也可以使用
