@@ -92,5 +92,5 @@ public class TestDemo {
 3. 非Spring环境中默认读取所有properties文件
 
 ```xml：
-   读取项目内所有properties文件存在一定的安全风险
+   读取项目内所有properties文件
 ```
