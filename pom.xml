@@ -7,7 +7,7 @@
 	<groupId>com.github.link-kou</groupId>
 	<artifactId>config-property</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<name>Plugin-ConfigProperty-${project.version}</name>
 	<url>https://github.com/Link-Kou/Plugin-ConfigProperty</url>
 

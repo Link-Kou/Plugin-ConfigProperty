@@ -38,8 +38,33 @@
 
 public class TestDemo {
 
-   @ConfigValue(@Value("${Globalparam.SYS_AUTH_DEV_NAME}"))
-   private Config<String> SYS_AUTH_DEV_NAME;
+   //初始化获取到项目内所有properties文件,修改后重启即可生效
+   @ConfigValue(value = @Value("${Globalparam.Paging.DEFAULT_ITEMS_PER_PAGE}"))
+   private Integer DEFAULT_ITEMS_PER_PAGE = 10;
+
+   //查询不到properties文件,默认使用赋值数据
+   @ConfigValue(@Value("${Globalparam.Paging.DEFAULT_ITEMS_PER_PAGE_NONE}"))
+   private transient Integer DEFAULT_ITEMS_PER_PAGE_NONE = 2;
+
+   //不支持非包装类型
+   @ConfigValue(@Value("${Globalparam.Paging.DEFAULT_PAGE}"))
+   private transient double DEFAULT_PAGE;
+
+   //Config 通过Spring方式获取
+   @ConfigValue(value = @Value("${Globalparam.Paging.DEFAULT_ITEMS_PER_PAGE}"), defaultValue = "5")
+   private transient Config<Integer> DEFAULT_ITEMS_PER_PAGE_Config;
+
+   @Test
+   public void test() {
+       final Integer integer1 = DEFAULT_ITEMS_PER_PAGE;
+       final Integer integer2 = DEFAULT_ITEMS_PER_PAGE_NONE;
+       final double integer3 = DEFAULT_PAGE;
+       final Integer integer4 = DEFAULT_ITEMS_PER_PAGE_Config.get();
+       System.out.println(integer1);
+       System.out.println(integer2);
+       System.out.println(integer3);
+       System.out.println(integer4);
+   }
 
 }
 
@@ -62,4 +87,10 @@ public class TestDemo {
         </property>
     </bean> 
             
+```
+
+3. 非Spring环境中默认读取所有properties文件
+
+```xml：
+   读取项目内所有properties文件存在一定的安全风险
 ```

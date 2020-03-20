@@ -4,6 +4,7 @@ package com.linkkou.configproperty;
 import com.sun.source.util.Trees;
 import com.sun.tools.javac.code.Attribute;
 import com.sun.tools.javac.code.Symbol;
+import com.sun.tools.javac.code.TypeTag;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.JCTree;
 import com.sun.tools.javac.tree.TreeMaker;
@@ -22,6 +23,7 @@ import java.util.*;
 
 /**
  * ATP 生成方法
+ *
  * @author LK
  * @date 2018-05-31 10:46
  */
@@ -126,25 +128,65 @@ public class ConfigMsgProcessor extends AbstractProcessor {
 
             //<editor-fold desc="获取到代码注解上的值">
             String configvalue = "";
+            Object defaultvalue = null;
             boolean isConfigValue = false;
             for (JCTree.JCAnnotation jcAnnotation : var1.mods.getAnnotations()) {
                 if (jcAnnotation.getAnnotationType().type.toString().equals("com.linkkou.configproperty.ConfigValue")) {
                     for (Pair<Symbol.MethodSymbol, Attribute> pair : jcAnnotation.attribute.values) {
-                        if (pair.snd.getValue() instanceof Attribute.Compound) {
-                            Attribute.Compound ac = (Attribute.Compound) pair.snd.getValue();
-                            for (Pair<Symbol.MethodSymbol, Attribute> pair2 : ac.values) {
-                                configvalue = (String) pair2.snd.getValue();
-                                isConfigValue=true;
+                        //Value
+                        if (pair.fst.toString().equals("value()")) {
+                            if (pair.snd.getValue() instanceof Attribute.Compound) {
+                                final Attribute.Compound value = (Attribute.Compound) pair.snd.getValue();
+                                if (value.type.toString().equals("org.springframework.beans.factory.annotation.Value")) {
+                                    Attribute.Compound ac = (Attribute.Compound) pair.snd.getValue();
+                                    for (Pair<Symbol.MethodSymbol, Attribute> pair2 : ac.values) {
+                                        configvalue = (String) pair2.snd.getValue();
+                                        isConfigValue = true;
+                                    }
+                                }
+                            }
+                        }
+                        //defaultValue
+                        if (pair.fst.toString().equals("defaultValue()")) {
+                            if (pair.snd.getValue() instanceof String) {
+                                defaultvalue = (String) pair.snd.getValue();
                             }
                         }
                     }
                 }
             }
-            if(!isConfigValue){
+            if (!isConfigValue) {
                 return;
             }
             //</editor-fold>
 
+            //<editor-fold desc="匹配ConfigUtils类中相关的方法">
+            boolean isConfig = false;
+            JCTree.JCExpression vartype = var1.vartype;
+            String val = "";
+            if (vartype instanceof JCTree.JCTypeApply) {
+                if ("com.linkkou.configproperty.Config".equals(vartype.type.tsym.toString())) {
+                    com.sun.tools.javac.util.List<JCTree.JCExpression> arguments = ((JCTree.JCTypeApply) var1.vartype).arguments;
+                    if (arguments.length() == 1) {
+                        val = arguments.get(0).toString();
+                        isConfig = true;
+                    }
+                } else {
+                    return;
+                }
+            } else if (vartype instanceof JCTree.JCIdent) {
+                val = ((JCTree.JCIdent) vartype).name.toString();
+                if (var1.init != null) {
+                    if (var1.init instanceof JCTree.JCLiteral) {
+                        final JCTree.JCLiteral init = (JCTree.JCLiteral) var1.init;
+                        defaultvalue = init.value;
+                    } else {
+                        return;
+                    }
+                }
+            } else {
+                return;
+            }
 
             //变量的调用new方法  new ConfigUtils("*");
             JCTree.JCExpression loggerNewClass = make.NewClass(null,
@@ -157,39 +199,32 @@ public class ConfigMsgProcessor extends AbstractProcessor {
                             ), names.fromString("ConfigUtils")),
                     //参数
                     com.sun.tools.javac.util.List.of(
-                            make.Literal(configvalue)
+                            make.Literal(configvalue),
+                            defaultvalue != null ? make.Literal(defaultvalue) : make.Literal(TypeTag.BOT, null)
                     ),
                     null);
-
-            //<editor-fold desc="匹配ConfigUtils类中相关的方法">
-            JCTree.JCExpression vartype = var1.vartype;
-            String val = "";
-            if(vartype instanceof JCTree.JCTypeApply){
-                com.sun.tools.javac.util.List<JCTree.JCExpression> arguments = ((JCTree.JCTypeApply) var1.vartype).arguments;
-                if(arguments.length() == 1){
-                    val = arguments.get(0).toString();
-                }
-            }
-            Name name = names.fromString("getConfig");
             /*Class classs = ConfigUtils.class;
             for (Method m : classs.getMethods()) {
                 if (m.getName().equals("get" + jcIdent.name.toString())) {
                     name = names.fromString(m.getName());
                 }
             }*/
-            //</editor-fold>
-
             //new ConfigUtils("*").*;
             JCTree.JCExpression loggerType2 = make.Select(
                     loggerNewClass,
-                    name);
+                    names.fromString("getConfig"));
 
             //new ConfigUtils("*").*()
             JCTree.JCMethodInvocation getLoggerCall = make.Apply(
                     com.sun.tools.javac.util.List.nil(),
                     //构建 -> getProxy()
                     loggerType2,
-                    com.sun.tools.javac.util.List.of(make.Literal(val)));//参数
+                    //参数
+                    com.sun.tools.javac.util.List.of(
+                            make.Literal(val),
+                            make.Literal(isConfig)
+                    ));
+            //</editor-fold>
 
             // private string name = new ConfigUtils("*").*()
             JCTree.JCVariableDecl jcv = make.VarDef(

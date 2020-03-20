@@ -1,13 +1,10 @@
 package com.linkkou.configproperty;
 
-import com.linkkou.configproperty.spring.ConfigMsgPropertyConfigurer;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.regex.Pattern;
 
 /**
  * 配置获取工具类
@@ -18,30 +15,30 @@ import java.util.regex.Pattern;
  */
 public class ConfigUtils {
 
-    private static Pattern p = Pattern.compile("[\\$\\{\\}]");
-
     private Object value;
 
     private String configvalue;
 
+    private Object defaultValue;
+
+    /**
+     * 构造
+     *
+     * @param configvalue 获取配置Key键
+     */
     public ConfigUtils(String configvalue) {
         this.configvalue = configvalue;
-        getReLoadObject();
     }
 
     /**
-     * 获取文本值
+     * 构造
      *
-     * @return
+     * @param configvalue  获取配置Key键
+     * @param defaultValue 默认值 作用于对Config
      */
-    public Object getReLoadObject() {
-        try {
-            String matchermsg = p.matcher(configvalue).replaceAll("");
-            return value = ConfigMsgPropertyConfigurer.getCtxProp(matchermsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        };
-        return null;
+    public ConfigUtils(String configvalue, Object defaultValue) {
+        this.configvalue = configvalue;
+        this.defaultValue = defaultValue;
     }
 
     /**
@@ -65,7 +62,11 @@ public class ConfigUtils {
         if (value instanceof Integer) {
             return (Integer) value;
         }
-        return Integer.parseInt(getString());
+        try {
+            return Integer.parseInt(getString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -83,7 +84,11 @@ public class ConfigUtils {
      * @return
      */
     public Long getLong() {
-        return Long.parseLong(getString());
+        try {
+            return Long.parseLong(getString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -92,7 +97,11 @@ public class ConfigUtils {
      * @return
      */
     public Double getDouble() {
-        return Double.parseDouble(getString());
+        try {
+            return Double.parseDouble(getString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -101,7 +110,11 @@ public class ConfigUtils {
      * @return
      */
     public Float getFloat() {
-        return Float.parseFloat(getString());
+        try {
+            return Float.parseFloat(getString());
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -110,7 +123,12 @@ public class ConfigUtils {
      * @return
      */
     public Short getShort() {
-        return Short.parseShort(getString());
+        try {
+            return Short.parseShort(getString());
+        } catch (Exception e) {
+            return null;
+        }
+
     }
 
     /**
@@ -132,12 +150,30 @@ public class ConfigUtils {
 
 
     /**
-     * 返回自己
-     *
+     * @param valtype  返回类型
+     * @param isConfig 是否是Config接口实现
+     * @param <T>
      * @return
      */
-    public Config getConfig(String valtype) {
-        return new ConfigImpl(this, valtype);
+    public <T> T getConfig(String valtype, Boolean isConfig) {
+        final ConfigImpl config = new ConfigImpl(this, valtype);
+        if (isConfig) {
+            return (T) config;
+        } else {
+            return (T) config.get();
+        }
     }
 
+    public ConfigUtils setValue(Object value) {
+        this.value = value;
+        return this;
+    }
+
+    public String getConfigvalue() {
+        return configvalue;
+    }
+
+    public Object getDefaultValue() {
+        return defaultValue;
+    }
 }
