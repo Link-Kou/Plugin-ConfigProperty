@@ -39,6 +39,7 @@ public class LocalConfigProperty {
     synchronized public static void loadProps() {
         Properties props = new Properties();
         try {
+            //获取到当前项目中的资源文件（不会获取到Jar中的资源文件）
             final String path = Objects.requireNonNull(LocalConfigProperty.class.getClassLoader().getResource("")).getPath();
             listDirectory(new File(path));
             for (File file : Files) {

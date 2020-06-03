@@ -20,12 +20,12 @@
     
 ### Maven仓库
 
- ```xml：
+ ```xml
 
  <dependency>
    <groupId>com.github.link-kou</groupId>
    <artifactId>config-property</artifactId>
-   <version>1.0.1</version>
+   <version>1.0.2</version>
  </dependency>
 
  ```    
@@ -34,7 +34,7 @@
 
 1. @ConfigValue会实现构建，在Spring环境中也可以使用
 
-```java：
+```java
 
 public class TestDemo {
 
@@ -71,7 +71,7 @@ public class TestDemo {
 ```
 2. 在Spring环境XML配置
 
-```xml：
+```xml
 
     <!--配置读取-->
     <bean class="com.linkkou.configproperty.spring.ConfigMsgPropertyConfigurer">
@@ -91,6 +91,6 @@ public class TestDemo {
 
 3. 非Spring环境中默认读取所有properties文件
 
-```xml：
+```xml
    读取项目内所有properties文件
 ```
