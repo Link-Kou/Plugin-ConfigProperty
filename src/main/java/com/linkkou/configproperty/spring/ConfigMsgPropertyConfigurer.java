@@ -2,11 +2,9 @@ package com.linkkou.configproperty.spring;
 
 
 import com.linkkou.configproperty.ConfigImpl;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
