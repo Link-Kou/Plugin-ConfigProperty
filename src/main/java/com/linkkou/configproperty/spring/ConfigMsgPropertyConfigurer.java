@@ -3,9 +3,14 @@ package com.linkkou.configproperty.spring;
 
 import com.linkkou.configproperty.ConfigImpl;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -16,16 +21,40 @@ import java.util.Properties;
  * @version 1.0
  * @data 2017-12-10 21:47
  */
-public class ConfigMsgPropertyConfigurer extends PropertyPlaceholderConfigurer {
+public class ConfigMsgPropertyConfigurer implements BeanFactoryPostProcessor {
+
+    private Resource[] locations;
+
+    private String fileEncoding = "UTF-8";
+
+    public void setLocations(Resource... locations) {
+        this.locations = locations;
+    }
+
+    public void setFileEncoding(String encoding) {
+        this.fileEncoding = encoding;
+    }
 
 
     @Override
-    protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
-        super.processProperties(beanFactoryToProcess, props);
-        for (Object key : props.keySet()) {
-            String keyStr = key.toString();
-            ConfigImpl.getCtxPropMap().put(keyStr, props.get(keyStr));
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
+        Properties result = new Properties();
+        if (null != locations) {
+            for (Resource resource : locations) {
+                Properties properties = new Properties();
+                try {
+                    final InputStreamReader inputStreamReader = new InputStreamReader(resource.getInputStream(), fileEncoding);
+                    properties.load(inputStreamReader);
+                    CollectionUtils.mergePropertiesIntoMap(properties, result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            for (Object key : result.keySet()) {
+                String keyStr = key.toString();
+                ConfigImpl.getCtxPropMap().put(keyStr, result.get(keyStr));
+            }
         }
-    }
 
+    }
 }
